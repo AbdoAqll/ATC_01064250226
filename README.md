@@ -177,7 +177,7 @@ Make sure you have the following installed:
 4. **Build and run the application**:
 
    - Build the solution in Visual Studio.
-   - Press **F5** or click the **Run** button.
+   - Press **Ctrl + F5** or click the **Run** button.
 
 5. **Access the application**:
    - Open your browser and navigate to:
