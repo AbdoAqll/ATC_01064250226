@@ -149,8 +149,8 @@ Make sure you have the following installed:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-repository/evently.git
-   cd evently
+   [git clone https://github.com/your-repository/evently.git](https://github.com/AbdoAqll/ATC_01064250226.git)
+   cd ATC_01064250226
    ```
 
 2. **Configure the database connection string**:
