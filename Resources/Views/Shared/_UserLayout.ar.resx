@@ -1,0 +1,66 @@
+  <data name="MyBookings" xml:space="preserve">
+    <value>حجوزاتي</value>
+  </data>
+  <data name="EventsLabel" xml:space="preserve">
+    <value>الفعاليات</value>
+  </data>
+  <data name="NearestLabel" xml:space="preserve">
+    <value>أقرب</value>
+  </data>
+  <data name="StatusLabel" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="QuantityLabel" xml:space="preserve">
+    <value>الكمية</value>
+  </data>
+  <data name="TotalPriceLabel" xml:space="preserve">
+    <value>السعر الإجمالي</value>
+  </data>
+  <data name="DetailsButton" xml:space="preserve">
+    <value>التفاصيل</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="BookNowButton" xml:space="preserve">
+    <value>احجز الآن</value>
+  </data>
+  <data name="NoBookingsMessage" xml:space="preserve">
+    <value>لم تقم بحجز أي فعاليات بعد.</value>
+  </data>
+  <data name="BrowseEventsButton" xml:space="preserve">
+    <value>تصفح الفعاليات</value>
+  </data>
+  <data name="NoEventsMessage" xml:space="preserve">
+    <value>لا توجد فعاليات قادمة متاحة.</value>
+  </data>
+  <data name="CancelConfirmationMessage" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد إلغاء هذا الحجز؟</value>
+  </data>
+  <data name="BookingNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الحجز.</value>
+  </data>
+  <data name="CannotCancelBooking" xml:space="preserve">
+    <value>لا يمكن إلغاء هذا الحجز.</value>
+  </data>
+  <data name="BookingCancelled" xml:space="preserve">
+    <value>تم إلغاء الحجز بنجاح.</value>
+  </data>
+  <data name="PreviousButton" xml:space="preserve">
+    <value>السابق</value>
+  </data>
+  <data name="NextButton" xml:space="preserve">
+    <value>التالي</value>
+  </data>
+  <data name="EventNotAvailable" xml:space="preserve">
+    <value>هذه الفعالية لم تعد متاحة للحجز.</value>
+  </data>
+  <data name="EventNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الفعالية.</value>
+  </data>
+  <data name="InvalidQuantity" xml:space="preserve">
+    <value>يجب أن تكون الكمية أكبر من 0.</value>
+  </data>
+  <data name="BookingError" xml:space="preserve">
+    <value>حدث خطأ أثناء معالجة حجزك. يرجى المحاولة مرة أخرى.</value>
+  </data> 

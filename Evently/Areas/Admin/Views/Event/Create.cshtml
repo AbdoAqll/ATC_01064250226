@@ -1,0 +1,142 @@
+@model EventCreateUpdateViewModel
+@{
+    ViewBag.Title = Model.Id == 0 ? "Add New Event" : "Edit Event";
+}
+
+<div class="page-header">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+<div class="form-container">
+    <form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post" enctype="multipart/form-data">
+        <input asp-for="Id" type="hidden" />
+        <input asp-for=ImageUrl type="hidden" />
+
+        <div class="form-section">
+            <h2>Basic Information</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="Date">Event Date</label>
+                    <input asp-for="Date" type="datetime-local" class="form-control" required />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Price">Price</label>
+                    <input asp-for="Price" type="number" step="0.01" class="form-control" required />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GoogleMapUrl">Google Map URL</label>
+                    <input asp-for="GoogleMapUrl" type="url" class="form-control" required/>
+                    <span asp-validation-for="GoogleMapUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ImageUrl">Event Image</label>
+                    <input type="file" name="ImageFile" class="form-control" accept="image/*" @(Model.Id == 0 ? "required" : "") />
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <div class="current-image">
+                            <img src="@Model.ImageUrl" alt="Current event image" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Translations</h2>
+
+            <!-- English Translation -->
+            <div class="translation-section">
+                <h3>English</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label asp-for="EventTranslations[0].Name">Name (English)</label>
+                        <input asp-for="EventTranslations[0].Name" class="form-control" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="EventTranslations[0].Category">Category (English)</label>
+                        <input asp-for="EventTranslations[0].Category" class="form-control" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="EventTranslations[0].Venue">Venue (English)</label>
+                        <input asp-for="EventTranslations[0].Venue" class="form-control" required />
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label asp-for="EventTranslations[0].Description">Description (English)</label>
+                        <textarea asp-for="EventTranslations[0].Description" class="form-control" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Tags (English)</label>
+                        <input asp-for="EventTranslations[0].EventTags" class="form-control"
+                               placeholder="Enter tags separated by commas" required />
+                    </div>
+                </div>
+                <input asp-for="EventTranslations[0].LanguageCode" type="hidden" value="en" />
+            </div>
+
+            <!-- Arabic Translation -->
+            <div class="translation-section">
+                <h3>Arabic</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label asp-for="EventTranslations[1].Name">Name (Arabic)</label>
+                        <input asp-for="EventTranslations[1].Name" class="form-control" dir="rtl" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="EventTranslations[1].Category">Category (Arabic)</label>
+                        <input asp-for="EventTranslations[1].Category" class="form-control" dir="rtl" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="EventTranslations[1].Venue">Venue (Arabic)</label>
+                        <input asp-for="EventTranslations[1].Venue" class="form-control" dir="rtl" required />
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label asp-for="EventTranslations[1].Description">Description (Arabic)</label>
+                        <textarea asp-for="EventTranslations[1].Description" class="form-control" rows="4" dir="rtl" required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Tags (Arabic)</label>
+                        <input asp-for="EventTranslations[1].EventTags" class="form-control" dir="rtl"
+                               placeholder="Enter tags separated by commas" required />
+                    </div>
+                </div>
+                <input asp-for="EventTranslations[1].LanguageCode" type="hidden" value="ar" />
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class='bx bx-save'></i>
+                @(Model.Id == 0 ? "Create" : "Save")
+            </button>
+            <a asp-action="Index" class="btn-secondary">
+                <i class='bx bx-x'></i>
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelectorAll('input[name$=".EventTags"]').forEach(input => {
+            input.addEventListener('change', function () {
+                let tags = this.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                this.value = tags.join(', ');
+            });
+        });
+    </script>
+}

@@ -1,0 +1,235 @@
+﻿@model PaginatedList<EventViewModel>
+
+<div class="left-section">
+    <h2 class="events-header">@Localizer["UpcomingLabel"] <span>@Localizer["EventsLabel"]</span></h2>
+    <div class="event-cards">
+        @foreach (var item in Model.Items)
+        {
+            <div class="event-card">
+                <img src="@item.ImageUrl" alt="@Localizer["EventImageAlt"]">
+                <div class="event-info">
+                    <h4>@item.Name</h4>
+                    <p class="category">@item.Category</p>
+                    <div class="tags-container">
+                        @if (!string.IsNullOrEmpty(item.Tags))
+                        {
+                            @foreach (var tag in item.Tags.Split(new[] { ',', '،' }, StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                <span class="tag">@tag.Trim()</span>
+                            }
+                        }
+                    </div>
+                    <p class="date">@item.Date.ToString("MMM dd, yyyy")</p>
+                    <div class="event-actions">
+                        @if (item.IsBooked)
+                        {
+                            <button class="book-button disabled" disabled>@Localizer["BookedButton"]</button>
+                        }
+                        else
+                        {
+                            <a asp-area="User" asp-controller="Booking" asp-action="Book" asp-route-id="@item.Id" class="book-button">@Localizer["BookNowButton"]</a>
+                        }
+                        <a asp-area="User" asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" asp-route-source="home" class="details-button">@Localizer["DetailsButton"]</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <!-- Pagination Section -->
+    @if (Model.TotalPages > 1)
+    {
+        <div class="pagination">
+            @if (Model.HasPreviousPage)
+            {
+                <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" class="prev">@Localizer["PrevButton"]</a>
+            }
+            else
+            {
+                <span class="prev disabled">@Localizer["PrevButton"]</span>
+            }
+
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <a asp-action="Index" asp-route-pageNumber="@i" 
+                   class="page-num @(i == Model.PageIndex ? "active" : "")">@i</a>
+            }
+
+            @if (Model.HasNextPage)
+            {
+                <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="next">@Localizer["NextButton"]</a>
+            }
+            else
+            {
+                <span class="next disabled">@Localizer["NextButton"]</span>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .event-card {
+        background-color: var(--bg-black-100);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px var(--shadow-color);
+        transition: transform var(--transition-speed) ease;
+    }
+
+    .event-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .event-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .event-content {
+        padding: 15px;
+    }
+
+    .event-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-black-900);
+        margin-bottom: 10px;
+    }
+
+    .event-info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+
+    .event-info span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--text-black-700);
+        font-size: 14px;
+    }
+
+    .event-info i {
+        color: var(--primary-color);
+    }
+
+    .event-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+
+    .event-tag {
+        background-color: var(--bg-black-50);
+        color: var(--text-black-700);
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    @@media screen and (max-width: 1080px) {
+        .event-cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media screen and (max-width: 768px) {
+        .event-cards {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 8px 0;
+    }
+
+    .tag {
+        background-color: var(--bg-black-50);
+        color: var(--text-black-700);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .pagination a, .pagination span {
+        padding: 8px 16px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: var(--text-black-700);
+        background-color: var(--bg-black-50);
+        transition: all 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background-color: var(--bg-black-100);
+    }
+
+    .pagination .active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .pagination .disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .event-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .book-button, .details-button {
+        flex: 1;
+        text-align: center;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        transition: transform 0.3s ease;
+    }
+
+    .book-button {
+        background-color: var(--primary-color);
+        color: var(--white);
+    }
+
+    .details-button {
+        background-color: var(--primary-color);
+        color: var(--white);
+    }
+
+    .book-button:hover, .details-button:hover {
+        transform: scale(1.05);
+    }
+
+    .book-button.disabled {
+        background-color: var(--bg-black-200) !important;
+        color: var(--text-black-700) !important;
+        cursor: not-allowed;
+        opacity: 0.8;
+        pointer-events: none;
+    }
+
+    .book-button.disabled:hover {
+        transform: none;
+        background-color: var(--bg-black-200) !important;
+    }
+</style>

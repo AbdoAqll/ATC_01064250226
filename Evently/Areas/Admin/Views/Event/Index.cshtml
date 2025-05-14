@@ -1,0 +1,173 @@
+@model IEnumerable<Models.Models.Event>
+@{
+    ViewBag.Title = "Events Management";
+}
+
+<div class="page-header">
+    <h1>Events</h1>
+    <div class="header-actions">
+        <div class="filters">
+            <form method="get" class="filter-form">
+                <input type="date" 
+                       name="date" 
+                       value="@(ViewBag.SelectedDate?.ToString("yyyy-MM-dd"))" 
+                       class="filter-input"
+                       onchange="this.form.submit()" />
+                @if (ViewBag.SelectedDate != null)
+                {
+                    <a href="@Url.Action("Index")" class="clear-filter" title="Clear Date Filter">
+                        <i class='bx bx-x'></i>
+                    </a>
+                }
+            </form>
+        </div>
+        <a asp-action="Create" class="add-btn">
+            <i class='bx bx-plus'></i>
+            Add New Event
+        </a>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Venue</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var evt in Model)
+            {
+                var enTranslation = evt.EventTranslations?.FirstOrDefault(t => t.LanguageCode == "en");
+                var arTranslation = evt.EventTranslations?.FirstOrDefault(t => t.LanguageCode == "ar");
+                <tr>
+                    <td>
+                        <div class="event-info">
+                            <div class="event-img">
+                                <img src="@evt.ImageUrl" alt="@enTranslation?.Name">
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="event-info">
+                            <div>
+                                <h4>@enTranslation?.Name</h4>
+                                <p>@arTranslation?.Name</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="event-info">
+                            <div>
+                                <h4>@enTranslation?.Category</h4>
+                                <p>@arTranslation?.Category</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@evt.Date.ToString("MMM dd, yyyy")</td>
+                    <td>@evt.Price.ToString("C", new System.Globalization.CultureInfo("en-EG"))</td>
+                    <td>
+                        <div class="event-info">
+                            <div>
+                                <h4>@enTranslation?.Venue</h4>
+                                <p>@arTranslation?.Venue</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @{
+                            var statusClass = evt.Date > DateTime.Now ? "active" : "pending";
+                            var statusText = evt.Date > DateTime.Now ? "Upcoming" : "Past";
+                        }
+                        <span class="status-badge @statusClass">@statusText</span>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <a asp-action="Edit" asp-route-id="@evt.Id" class="action-btn edit" title="Edit">
+                                <i class='bx bx-edit-alt'></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@evt.Id" class="action-btn view" title="View Details">
+                                <i class='bx bx-show'></i>
+                            </a>
+                            <a href="javascript:void(0);" onclick="showConfirmation('/Admin/Event/Delete/@evt.Id')" class="action-btn delete" title="Delete">
+                                <i class='bx bx-trash'></i>
+                            </a>
+                            
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/confirmation.js"></script>
+}
+
+@section Styles {
+    <style>
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filters {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-form {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0;
+            align-items: center;
+        }
+
+        .filter-input {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--bg-white);
+            color: var(--text-black-700);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-input:hover {
+            border-color: var(--primary-color);
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-color-light);
+        }
+
+        .clear-filter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background-color: var(--danger-color-light);
+            color: var(--danger-color);
+            transition: all 0.3s ease;
+        }
+
+        .clear-filter:hover {
+            background-color: var(--danger-color);
+            color: white;
+        }
+    </style>
+}

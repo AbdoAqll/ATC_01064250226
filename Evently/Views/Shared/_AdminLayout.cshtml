@@ -1,0 +1,112 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="~/css/admin-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <i class='bx bx-pulse'></i>
+                <h2>Evently</h2>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li class="@(Context.Request.Path.StartsWithSegments("/Admin/Event") ? "active" : "")">
+                        <a asp-area="Admin" asp-controller="Event" asp-action="Index">
+                            <i class='bx bx-calendar-event'></i> <span>Events</span>
+                        </a>
+                    </li>
+                    <li class="@(Context.Request.Path.StartsWithSegments("/Admin/Booking") ? "active" : "")">
+                        <a asp-area="Admin" asp-controller="Booking" asp-action="Index">
+                            <i class='bx bx-book-bookmark'></i> <span>Bookings</span>
+                        </a>
+                    </li>
+                    <li class="@(Context.Request.Path.StartsWithSegments("/Admin/User") ? "active" : "")">
+                        <a asp-area="Admin" asp-controller="User" asp-action="Index">
+                            <i class='bx bx-user'></i> <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="@(Context.Request.Path.StartsWithSegments("/User/Home") ? "active" : "")">
+                        <a asp-area="User" asp-controller="Home" asp-action="Index">
+                            <i class='bx bx-grid-alt'></i> <span>Users Home</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="logout">
+                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "User" })" method="post">
+                        <button type="submit" class="logout-btn">
+                            <i class='bx bx-log-out'></i> <span>Logout</span>
+                        </button>
+                    </form>
+                </div>
+            }
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="topbar">
+                <div class="toggle-search">
+                    <button id="sidebar-toggle"><i class='bx bx-menu'></i></button>
+                    <div class="search">
+                        <i class='bx bx-search'></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="profile">
+                    <div class="theme-toggle">
+                        <i class='bx bxs-moon' id="theme-toggle"></i>
+                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        var user = await UserManager.GetUserAsync(User);
+                        if (user != null)
+                        {
+                            <a href="/Identity/Account/Manage" class="user">
+                                <div class="user">
+                                    <div class="left">
+                                        <img src="~/images/user-avatar.png" alt="Profile" />
+                                    </div>
+                                    <div class="right">
+                                        <h5>@user.UserName</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <partial name="_ConfirmationPopup" />
+                @RenderBody()
+            </div>
+
+            <!-- Footer -->
+            <footer>
+                <p>&copy; 2025 Evently Admin Dashboard. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="~/js/admin-script.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

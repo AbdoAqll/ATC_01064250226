@@ -1,0 +1,94 @@
+﻿@model List<EventViewModel>
+
+<div class="right-section">
+    <h2 class="events-header">@Localizer["YourLabel"] <span>@Localizer["SoonestEvents"]</span></h2>
+    <div class="event-cards">
+        @foreach (var item in Model)
+        {
+            <div class="event-card">
+                <img src="@item.ImageUrl" alt="@Localizer["EventImageAlt"]">
+                <div class="event-info">
+                    <h4>@item.Name</h4>
+                    <p class="category">@item.Category</p>
+                    <div class="tags-container">
+                        @if (!string.IsNullOrEmpty(item.Tags))
+                        {
+                            @foreach (var tag in item.Tags.Split(new[] { ',', '،' }, StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                <span class="tag">@tag.Trim()</span>
+                            }
+                        }
+                    </div>
+                    <p class="date">@item.Date.ToString("MMM dd, yyyy")</p>
+                    <div class="event-actions">
+                        @if (item.IsBooked)
+                        {
+                            <button class="book-button disabled" disabled>@Localizer["BookedButton"]</button>
+                        }
+                        else
+                        {
+                            <a asp-area="User" asp-controller="Booking" asp-action="Book" asp-route-id="@item.Id" class="book-button">@Localizer["BookNowButton"]</a>
+                        }
+                        <a asp-area="User" asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" asp-route-source="home" class="details-button">@Localizer["DetailsButton"]</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 8px 0;
+    }
+
+    .tag {
+        background-color: var(--bg-black-50);
+        color: var(--text-black-700);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .book-button, .details-button {
+        flex: 1;
+        text-align: center;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        transition: transform 0.3s ease;
+    }
+
+    .book-button {
+        background-color: var(--primary-color);
+        color: var(--white);
+    }
+
+    .details-button {
+        background-color: var(--primary-color);
+        color: var(--white);
+    }
+
+    .book-button:hover, .details-button:hover {
+        transform: scale(1.05);
+    }
+
+    .book-button.disabled {
+        background-color: var(--bg-black-200) !important;
+        color: var(--text-black-700) !important;
+        cursor: not-allowed;
+        opacity: 0.8;
+        pointer-events: none;
+    }
+
+    .book-button.disabled:hover {
+        transform: none;
+        background-color: var(--bg-black-200) !important;
+    }
+</style>

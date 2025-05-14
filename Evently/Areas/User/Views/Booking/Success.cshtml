@@ -1,0 +1,331 @@
+@model Models.ViewModels.BookingViewModel
+@{
+    ViewData["Title"] = Localizer["BookingSuccessTitle"];
+}
+
+<!-- Left Section -->
+<div class="details-card">
+    <div class="card-header">
+        <div class="header-content">
+            <h2>@Localizer["BookingSuccessTitle"]</h2>
+            <div class="header-actions">
+                <a asp-controller="Booking" asp-action="Index" class="btn-secondary">
+                    <i class='bx bx-calendar'></i>
+                    @Localizer["ViewMyBookingsButton"]
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="btn-secondary">
+                    <i class='bx bx-home'></i>
+                    @Localizer["BackToHomeButton"]
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="success-message">
+            <div class="success-icon">
+                <i class='bx bx-check-circle'></i>
+            </div>
+            <h3>@Localizer["BookingConfirmedMessage"]</h3>
+            <p>@Localizer["BookingSuccessDescription"]</p>
+        </div>
+
+        <div class="details-section">
+            <h3>@Localizer["BookingSummary"]</h3>
+            <div class="details-grid-2">
+                <div class="detail-item">
+                    <label>@Localizer["EventNameLabel"]</label>
+                    <p>@Model.EventName</p>
+                </div>
+                <div class="detail-item">
+                    <label>@Localizer["EventDateLabel"]</label>
+                    <p>@Model.EventDate.ToString("MMM dd, yyyy HH:mm")</p>
+                </div>
+                <div class="detail-item">
+                    <label>@Localizer["EventVenueLabel"]</label>
+                    <p>@Model.EventVenue</p>
+                </div>
+                <div class="detail-item">
+                    <label>@Localizer["QuantityLabel"]</label>
+                    <p>@Model.Quantity</p>
+                </div>
+                <div class="detail-item">
+                    <label>@Localizer["TotalPriceLabel"]</label>
+                    <p class="total-price-value">@((Model.EventPrice * Model.Quantity).ToString("C", new System.Globalization.CultureInfo("en-EG")))</p>
+                </div>
+                <div class="detail-item">
+                    <label>@Localizer["BookingStatusLabel"]</label>
+                    <p><span class="status-badge active">@Localizer["PendingStatus"]</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <h3>@Localizer["NextSteps"]</h3>
+            <div class="next-steps">
+                <div class="step-item">
+                    <div class="step-icon">
+                        <i class='bx bx-envelope'></i>
+                    </div>
+                    <div class="step-content">
+                        <h4>@Localizer["EmailConfirmation"]</h4>
+                        <p>@Localizer["EmailConfirmationDescription"]</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-icon">
+                        <i class='bx bx-calendar-event'></i>
+                    </div>
+                    <div class="step-content">
+                        <h4>@Localizer["EventReminder"]</h4>
+                        <p>@Localizer["EventReminderDescription"]</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-icon">
+                        <i class='bx bx-help-circle'></i>
+                    </div>
+                    <div class="step-content">
+                        <h4>@Localizer["NeedHelp"]</h4>
+                        <p>@Localizer["NeedHelpDescription"]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .details-card {
+        background-color: var(--bg-black-100);
+        border-radius: 12px;
+        box-shadow: 0 2px 8px var(--shadow-color);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        padding: 20px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .card-header h2 {
+        color: var(--text-black-900);
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-primary, .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-secondary {
+        background-color: var(--bg-black-100);
+        color: var(--text-black-700);
+        border: 1px solid var(--bg-black-200);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--bg-black-200);
+        transform: scale(1.05);
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .success-message {
+        text-align: center;
+        padding: 30px 20px;
+        margin-bottom: 30px;
+        background-color: var(--bg-black-50);
+        border-radius: 8px;
+    }
+
+    .success-icon {
+        font-size: 64px;
+        color: var(--success-color);
+        margin-bottom: 20px;
+    }
+
+    .success-message h3 {
+        color: var(--text-black-900);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .success-message p {
+        color: var(--text-black-700);
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .details-section {
+        margin-bottom: 30px;
+    }
+
+    .details-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .details-section h3 {
+        color: var(--text-black-900);
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--primary-color);
+    }
+
+    .details-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .detail-item {
+        margin-bottom: 15px;
+    }
+
+    .detail-item.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .detail-item label {
+        display: block;
+        color: var(--text-black-700);
+        font-weight: 500;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+
+    .detail-item p {
+        color: var(--text-black-900);
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .total-price-value {
+        color: var(--primary-color) !important;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .status-badge.active {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: var(--success-color);
+    }
+
+    .next-steps {
+        display: grid;
+        gap: 20px;
+    }
+
+    .step-item {
+        display: flex;
+        gap: 15px;
+        padding: 15px;
+        background-color: var(--bg-black-50);
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    .step-item:hover {
+        transform: translateX(5px);
+    }
+
+    .step-icon {
+        font-size: 24px;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: var(--bg-black-100);
+        border-radius: 8px;
+    }
+
+    .step-content h4 {
+        color: var(--text-black-900);
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 5px 0;
+    }
+
+    .step-content p {
+        color: var(--text-black-700);
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    @@media screen and (max-width: 992px) {
+        .header-content {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .header-actions {
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+
+    @@media screen and (max-width: 576px) {
+        .details-grid-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .header-actions {
+            flex-direction: column;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .step-item {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: center;
+        }
+
+        .step-icon {
+            margin: 0 auto 10px;
+        }
+    }
+</style> 

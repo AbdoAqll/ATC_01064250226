@@ -1,0 +1,52 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = Localizer["RegisterTitle"];
+}
+
+<div class="identity-container">
+    <h1>@Localizer["RegisterTitle"]</h1>
+    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="@Localizer["UserNamePlaceholder"]" />
+            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.FullName" class="form-control" autocomplete="name" aria-required="true" placeholder="@Localizer["FullNamePlaceholder"]" />
+            <span asp-validation-for="Input.FullName" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="tel" aria-required="true" placeholder="@Localizer["PhoneNumberPlaceholder"]" />
+            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="@Localizer["EmailPlaceholder"]" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="@Localizer["PasswordPlaceholder"]" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="@Localizer["ConfirmPasswordPlaceholder"]" />
+            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+        </div>
+        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">@Localizer["RegisterButton"]</button>
+        <div class="mt-3 text-center">
+            <p>
+                @Localizer["LoginLink"] <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["LoginLink"]</a>
+            </p>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

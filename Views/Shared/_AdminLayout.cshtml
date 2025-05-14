@@ -1,0 +1,41 @@
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="logout">
+                    <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                        <button type="submit" class="logout-btn">
+                            <i class='bx bx-log-out'></i> <span>Logout</span>
+                        </button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="logout">
+                    <a href="/Identity/Account/Login" class="auth-link">
+                        <i class='bx bx-log-in'></i> <span>Login</span>
+                    </a>
+                    <a href="/Identity/Account/Register" class="auth-link">
+                        <i class='bx bx-user-plus'></i> <span>Register</span>
+                    </a>
+                </div>
+            }
+
+<div class="menu">
+    <ul>
+        <li class="@(Context.Request.Path.StartsWithSegments("/Admin/Event") ? "active" : "")">
+            <a asp-area="Admin" asp-controller="Event" asp-action="Index">
+                <i class='bx bx-calendar-event'></i> <span>Events</span>
+            </a>
+        </li>
+        <li class="@(Context.Request.Path.StartsWithSegments("/Admin/Booking") ? "active" : "")">
+            <a asp-area="Admin" asp-controller="Booking" asp-action="Index">
+                <i class='bx bx-book-bookmark'></i> <span>Bookings</span>
+            </a>
+        </li>
+        <li class="@(Context.Request.Path.StartsWithSegments("/Admin/User") ? "active" : "")">
+            <a asp-area="Admin" asp-controller="User" asp-action="Index">
+                <i class='bx bx-user'></i> <span>Users</span>
+            </a>
+        </li>
+    </ul>
+</div> 

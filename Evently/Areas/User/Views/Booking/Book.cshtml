@@ -1,0 +1,388 @@
+@model Models.ViewModels.BookingViewModel
+@{
+    ViewData["Title"] = Localizer["BookEventTitle"];
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="~/css/user-style.css">
+    <link rel="stylesheet" href="~/css/style-switcher.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        function incrementQuantity() {
+            var input = document.getElementById('quantity');
+            var value = parseInt(input.value);
+            if (value < 10) {
+                input.value = value + 1;
+                updateTotalPrice();
+            }
+        }
+
+        function decrementQuantity() {
+            var input = document.getElementById('quantity');
+            var value = parseInt(input.value);
+            if (value > 1) {
+                input.value = value - 1;
+                updateTotalPrice();
+            }
+        }
+
+        function updateTotalPrice() {
+            var quantity = parseInt(document.getElementById('quantity').value);
+            var price = @Model.EventPrice;
+            var total = quantity * price;
+            // Use Intl.NumberFormat for proper currency formatting based on culture
+            var formatter = new Intl.NumberFormat('en-EG', {
+                style: 'currency',
+                currency: 'EGP',
+                currencyDisplay: 'EGP'
+            });
+            document.getElementById('totalPrice').textContent = formatter.format(total);
+        }
+    </script>
+</head>
+
+<!-- Left Section -->
+<div class="details-card">
+    <div class="card-header">
+        <div class="header-content">
+            <h2>@Localizer["BookEventTitle"]</h2>
+            <div class="header-actions">
+                <a asp-controller="Home" asp-action="Index" class="btn-secondary">
+                    <i class='bx bx-arrow-back'></i>
+                    @Localizer["CancelButton"]
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                <i class='bx bx-error-circle'></i>
+                @TempData["Error"]
+            </div>
+        }
+
+        <div class="event-image">
+            <img src="@Model.EventImageUrl" alt="@Model.EventName">
+        </div>
+
+        <div class="details-section">
+            <h3>@Localizer["EventInformation"]</h3>
+            <div class="details-grid-2">
+                <div class="detail-item">
+                    <label>@Localizer["NameLabel"]</label>
+                    <p>@Model.EventName</p>
+                </div>
+                <div class="detail-item">
+                    <label>@Localizer["CategoryLabel"]</label>
+                    <p>@Model.EventCategory</p>
+                </div>
+                <div class="detail-item">
+                    <label>@Localizer["DateLabel"]</label>
+                    <p>@Model.EventDate.ToString("MMM dd, yyyy HH:mm")</p>
+                </div>
+                <div class="detail-item">
+                    <label>@Localizer["PriceLabel"]</label>
+                    <p>@Model.EventPrice.ToString("C", new System.Globalization.CultureInfo("en-EG"))</p>
+                </div>
+                <div class="detail-item">
+                    <label>@Localizer["VenueLabel"]</label>
+                    <p>@Model.EventVenue</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <h3>@Localizer["BookingDetails"]</h3>
+            <form asp-action="Book" asp-route-id="@Model.EventId" method="post" class="booking-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="eventPrice" value="@Model.EventPrice" />
+                <div class="form-group">
+                    <label for="quantity">@Localizer["QuantityLabel"]</label>
+                    <div class="quantity-input">
+                        <button type="button" class="quantity-btn" onclick="decrementQuantity()">
+                            <i class='bx bx-minus'></i>
+                        </button>
+                        <input type="number" id="quantity" name="quantity" value="@Model.Quantity" min="1" max="10" readonly>
+                        <button type="button" class="quantity-btn" onclick="incrementQuantity()">
+                            <i class='bx bx-plus'></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+
+                <div class="total-price">
+                    <span>@Localizer["TotalPriceLabel"]:</span>
+                    <span id="totalPrice">@((Model.EventPrice * Model.Quantity).ToString("C", new System.Globalization.CultureInfo("en-EG")))</span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class='bx bx-calendar-check'></i>
+                        @Localizer["ConfirmBookingButton"]
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .details-card {
+        background-color: var(--bg-black-100);
+        border-radius: 12px;
+        box-shadow: 0 2px 8px var(--shadow-color);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        padding: 20px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .card-header h2 {
+        color: var(--text-black-900);
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-primary, .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: var(--white) !important;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-primary:hover {
+        transform: scale(1.05);
+    }
+
+    .btn-secondary {
+        background-color: var(--bg-black-100);
+        color: var(--text-black-700);
+        border: 1px solid var(--bg-black-200);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--bg-black-200);
+        transform: scale(1.05);
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .event-image {
+        width: 100%;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .event-image img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .details-section {
+        margin-bottom: 30px;
+    }
+
+    .details-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .details-section h3 {
+        color: var(--text-black-900);
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--primary-color);
+    }
+
+    .details-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .detail-item {
+        margin-bottom: 15px;
+    }
+
+    .detail-item.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .detail-item label {
+        display: block;
+        color: var(--text-black-700);
+        font-weight: 500;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+
+    .detail-item p {
+        color: var(--text-black-900);
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .booking-form {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-black-700);
+        font-weight: 500;
+    }
+
+    .quantity-input {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        max-width: 150px;
+    }
+
+    .quantity-btn {
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--bg-black-200);
+        background: var(--bg-black-50);
+        color: var(--text-black-700);
+        font-size: 1.2rem;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .quantity-btn:hover {
+        background: var(--bg-black-100);
+    }
+
+    .quantity-input input {
+        width: 60px;
+        height: 36px;
+        text-align: center;
+        border: 1px solid var(--bg-black-200);
+        border-radius: 4px;
+        font-size: 1rem;
+        background: var(--bg-black-50);
+        color: var(--text-black-900);
+    }
+
+    .total-price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-top: 1px solid var(--bg-black-200);
+        border-bottom: 1px solid var(--bg-black-200);
+        margin: 20px 0;
+        font-size: 1.2rem;
+        color: var(--text-black-900);
+        font-weight: 500;
+    }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .alert-danger {
+        background: var(--danger-color-light);
+        color: var(--danger-color);
+        border: 1px solid var(--danger-color);
+    }
+
+    .text-danger {
+        color: var(--danger-color);
+        font-size: 0.9rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+    @@media screen and (max-width: 992px) {
+        .header-content {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .header-actions {
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+
+    @@media screen and (max-width: 576px) {
+        .details-grid-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .event-image img {
+            height: 200px;
+        }
+
+        .header-actions {
+            flex-direction: column;
+        }
+
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script src="~/js/booking.js"></script>
+} 

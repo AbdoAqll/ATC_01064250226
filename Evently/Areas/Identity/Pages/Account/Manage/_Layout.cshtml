@@ -1,0 +1,35 @@
+﻿@model Evently.Areas.Identity.Pages.Account.Manage.ManageBaseModel
+
+@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+<div class="profile-content">
+    <div class="profile-section">
+        <h2 class="profile-title">@Localizer["ProfileTitle"]</h2>
+        <partial name="_StatusMessage" for="StatusMessage" />
+        @RenderBody()
+    </div>
+</div>
+<div class="profile-sidebar">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <img src="~/images/user-avatar.png" alt="Profile">
+        </div>
+        <h3>@Model.UserName</h3>
+    </div>
+    <nav class="profile-nav">
+        <partial name="_ManageNav" />
+    </nav>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

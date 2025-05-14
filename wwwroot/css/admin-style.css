@@ -1,0 +1,125 @@
+/* Logout and Auth Styles */
+.logout {
+    margin-top: auto;
+    padding: 15px 0;
+}
+
+.logout form {
+    margin: 0;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-black-700);
+    text-align: left;
+}
+
+.logout-btn i {
+    font-size: 20px;
+    min-width: 25px;
+    transition: color 0.3s ease;
+}
+
+.logout-btn span {
+    transition: opacity 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: var(--sidebar-active);
+}
+
+.logout-btn:hover i,
+.logout-btn:hover span {
+    color: var(--danger-color);
+}
+
+.auth-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: var(--text-black-700);
+    text-decoration: none;
+}
+
+.auth-link i {
+    font-size: 20px;
+    min-width: 25px;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+    background-color: var(--sidebar-active);
+}
+
+.auth-link:hover i,
+.auth-link:hover span {
+    color: var(--primary-color);
+}
+
+.sidebar.collapsed .logout-btn span,
+.sidebar.collapsed .auth-link span {
+    opacity: 0;
+    display: none;
+}
+
+.sidebar .logout {
+    margin-top: auto;
+    padding: 15px 0;
+}
+
+.sidebar .logout form {
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar .logout .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-black-700);
+    text-align: left;
+    font-size: 16px;
+}
+
+.sidebar .logout .logout-btn i {
+    font-size: 20px;
+    min-width: 25px;
+    transition: color 0.3s ease;
+}
+
+.sidebar .logout .logout-btn span {
+    transition: opacity 0.3s ease;
+}
+
+.sidebar .logout .logout-btn:hover {
+    background-color: var(--sidebar-active);
+}
+
+.sidebar .logout .logout-btn:hover i,
+.sidebar .logout .logout-btn:hover span {
+    color: var(--danger-color);
+}
+
+.sidebar.collapsed .logout .logout-btn span {
+    opacity: 0;
+    display: none;
+} 

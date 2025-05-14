@@ -1,0 +1,7 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@await Html.PartialAsync("_UpcomingEvents", Model.UpcomingEvents)
+@await Html.PartialAsync("_SoonestEvents", Model.SoonestEvents)

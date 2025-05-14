@@ -1,0 +1,335 @@
+﻿@model Models.Models.Event
+@{
+    ViewBag.Title = "Event Details";
+    var enTranslation = Model.EventTranslations?.FirstOrDefault(t => t.LanguageCode == "en");
+    var arTranslation = Model.EventTranslations?.FirstOrDefault(t => t.LanguageCode == "ar");
+}
+
+<div class="page-header">
+    <h1>@ViewBag.Title</h1>
+    <div class="header-actions">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary">
+            <i class='bx bx-edit-alt'></i>
+            Edit
+        </a>
+        <a asp-action="Index" class="btn-secondary">
+            <i class='bx bx-arrow-back'></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="details-container">
+    <div class="details-grid">
+        <!-- Event Details Card -->
+        <div class="details-card">
+            <div class="card-header">
+                <h2>Event Information</h2>
+            </div>
+            <div class="card-body">
+                <div class="event-image">
+                    <img src="@Model.ImageUrl" alt="@enTranslation?.Name" />
+                </div>
+
+                <div class="details-section">
+                    <h3>Basic Details</h3>
+                    <div class="details-grid-2">
+                        <div class="detail-item">
+                            <label>Name (English)</label>
+                            <p>@enTranslation?.Name</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Name (Arabic)</label>
+                            <p dir="rtl">@arTranslation?.Name</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Category (English)</label>
+                            <p>@enTranslation?.Category</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Category (Arabic)</label>
+                            <p dir="rtl">@arTranslation?.Category</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Date</label>
+                            <p>@Model.Date.ToString("MMM dd, yyyy HH:mm")</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Price</label>
+                            <p>@Model.Price.ToString("C", new System.Globalization.CultureInfo("en-EG"))</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Status</label>
+                            <p>
+                                @{
+                                    var statusClass = Model.Date > DateTime.Now ? "active" : "pending";
+                                    var statusText = Model.Date > DateTime.Now ? "Upcoming" : "Past";
+                                }
+                                <span class="status-badge @statusClass">@statusText</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-section">
+                    <h3>Venue</h3>
+                    <div class="details-grid-2">
+                        <div class="detail-item">
+                            <label>Venue (English)</label>
+                            <p>@enTranslation?.Venue</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Venue (Arabic)</label>
+                            <p dir="rtl">@arTranslation?.Venue</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-section">
+                    <h3>Description</h3>
+                    <div class="details-grid-2">
+                        <div class="detail-item full-width">
+                            <label>Description (English)</label>
+                            <p>@enTranslation?.Description</p>
+                        </div>
+                        <div class="detail-item full-width">
+                            <label>Description (Arabic)</label>
+                            <p dir="rtl">@arTranslation?.Description</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-section">
+                    <h3>Tags</h3>
+                    <div class="details-grid-2">
+                        <div class="detail-item">
+                            <label>Tags (English)</label>
+                            <div class="tags-container">
+                                @if (enTranslation?.EventTags != null)
+                                {
+                                    @foreach (var tag in (enTranslation.EventTags ?? "")
+                                   .Split(new[] { ',', '،' }, StringSplitOptions.RemoveEmptyEntries))
+                                    {
+                                        <span class="tag">@tag.Trim()</span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <label>Tags (Arabic)</label>
+                            <div class="tags-container" dir="rtl">
+                                @if (arTranslation?.EventTags != null)
+                                {
+                                    @foreach (var tag in (arTranslation.EventTags ?? "")
+                                   .Split(new[] { ',', '،' }, StringSplitOptions.RemoveEmptyEntries))
+                                    {
+                                        <span class="tag">@tag.Trim()</span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Maps Card -->
+        <div class="details-card">
+            <div class="card-header">
+                <h2>Location</h2>
+            </div>
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(Model.GoogleMapUrl))
+                {
+                    <div class="map-container">
+                        <iframe src="@Model.GoogleMapUrl"
+                                width="100%"
+                                height="450"
+                                style="border:0;"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                }
+                else
+                {
+                    <div class="no-map">
+                        <i class='bx bx-map-alt'></i>
+                        <p>No location provided</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .details-container {
+            padding: 20px 0;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .details-card {
+            background-color: var(--bg-black-100);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-header h2 {
+            color: var(--text-black-900);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .event-image {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .details-section {
+            margin-bottom: 30px;
+        }
+
+        .details-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .details-section h3 {
+            color: var(--text-black-900);
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .details-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .detail-item {
+            margin-bottom: 15px;
+        }
+
+        .detail-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .detail-item label {
+            display: block;
+            color: var(--text-black-700);
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .detail-item p {
+            color: var(--text-black-900);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background-color: var(--bg-black-50);
+            color: var(--text-black-700);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .no-map {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 450px;
+            background-color: var(--bg-black-50);
+            border-radius: 8px;
+            color: var(--text-black-700);
+        }
+
+        .no-map i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--text-black-700);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        @@media screen and (max-width: 992px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .header-actions .btn-primary,
+            .header-actions .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @@media screen and (max-width: 576px) {
+            .details-grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .event-image img {
+                height: 200px;
+            }
+
+            .map-container,
+            .no-map {
+                height: 300px;
+            }
+        }
+    </style>
+} 

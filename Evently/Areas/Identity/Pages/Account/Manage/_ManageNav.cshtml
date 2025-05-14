@@ -1,0 +1,14 @@
+﻿@using Models.Models
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="profile-menu">
+    <li>
+        <a class="@ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
+            <i class='bx bx-user'></i>
+            <span>@Localizer["ProfileMenu"]</span>
+        </a>
+    </li>
+</ul>
