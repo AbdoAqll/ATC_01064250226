@@ -13,6 +13,8 @@ Evently is a full-stack event booking system designed to simplify the process of
 5. [Demo Video](#demo-video)
 6. [Future Work](#future-work)
 7. [Operating Instruction](#operating-instruction)
+8. [Default Admin Credentials](#default-admin-credentials)  
+9. [Note](#note)
 
 ---
 
