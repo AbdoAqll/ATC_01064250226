@@ -124,9 +124,12 @@ Several enhancements are planned for the future to improve the platform:
 - **Payment Integration**:  
   Integration with **Stripe** is planned to enable users to securely pay for event bookings directly through the platform.
 
+- **Search for Events with Relevance Ranking**:  
+  A smart search feature will be added to help users find events more effectively. This will be implemented using Cosine Similarity between the user's search query and the event titles and descriptions in the     system. By representing text as vectorized tokens (e.g., TF-IDF vectors), the system will calculate similarity scores and rank results based on their relevance, allowing for a more intelligent and user-         friendly search experience.
+
 - **Deployment**:  
   I will host the application online to make it accessible publicly for real-world usage and testing.
-
+  
 These features will enhance the reliability, usability, and professionalism of the Evently platform.
 
 ---
