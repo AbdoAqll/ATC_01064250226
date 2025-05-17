@@ -203,4 +203,17 @@ To log in as an admin and manage events/bookings, use the following credentials:
 
 ---
 
+## Note
+---
+
+> 🔍 **Note on Google Map URLs**  
+> When adding event locations with Google Maps, only the `src` attribute value from the iframe embed code should be stored and used — **not the entire `<iframe>` tag**.  
+>
+> ✅ **Example of a valid Google Map URL to store**:  
+> ```
+> https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3452.6938745177977!2d31.30468772478552!3d30.074308174908428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583fa162b415a7%3A0xd4503faedd57daae!2sAreeb%20Technologies!5e0!3m2!1sar!2seg!4v1747517126618!5m2!1sar!2seg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade
+> ```
+
+---
+
 Feel free to contribute, report issues, or suggest improvements!
